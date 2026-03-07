@@ -43,11 +43,11 @@ public class AuthService : IAuthService
             throw new NotFoundException("User not found.");
         }
 
-        if (loginDTO.FingerprintEnabled && loginDTO.FingerprintLoginAuth)
-        {
-            return await _jwtTokenGenerator.GenerateTokenAsync(user);
-        }
-
+        // SECURITY FIX: Removed the fingerprint bypass block that previously returned a
+        // token based solely on client-sent flags (FingerprintEnabled + FingerprintLoginAuth).
+        // The server cannot trust those claims — biometric auth is handled on the device and
+        // the result must NOT skip server-side password verification. Every login now requires
+        // the password to be checked, regardless of fingerprint preference.
         if (!await _userManager.CheckPasswordAsync(user, loginDTO.PasswordHash))
         {
             throw new UnauthorizedAccessException("Wrong password!");

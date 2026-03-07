@@ -1,6 +1,7 @@
 package ca.mohawk.medichelper.api;
 
-import com.google.android.gms.common.api.Api;
+// FIX: Removed unused import 'com.google.android.gms.common.api.Api'. It served no purpose
+// and could cause confusion by implying a dependency that isn't there.
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-﻿using MedicHelperAPI.Models;
+using MedicHelperAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedicHelperAPI.Services;
 
-public class ReminderResetService :BackgroundService 
+public class ReminderResetService : BackgroundService 
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<ReminderResetService> _logger;
@@ -31,9 +31,13 @@ public class ReminderResetService :BackgroundService
 
                 foreach (var reminder in reminders)
                 {
-                        reminder.MedicationTaken = false;
-                        await context.SaveChangesAsync();
+                    reminder.MedicationTaken = false;
                 }
+
+                // BUG FIX: SaveChangesAsync() was called inside the foreach loop, causing one
+                // separate database round-trip per reminder. Moved outside the loop so all
+                // changes are batched into a single database write.
+                await context.SaveChangesAsync();
             }
         }
     }

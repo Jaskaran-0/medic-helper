@@ -1,4 +1,4 @@
-﻿using MedicHelperAPI.Models;
+using MedicHelperAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using MedicHelperAPI.Services;
 
@@ -6,6 +6,9 @@ public class ReminderService : BackgroundService
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<ReminderService> _logger;
+    // NOTE (timezone): Hardcoded to Eastern Standard Time. Users in other timezones will
+    // receive reminders at incorrect local times. Future fix: store user timezone in the
+    // User model and convert per-user when sending notifications.
     private static readonly TimeZoneInfo EasternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
     public ReminderService(IServiceScopeFactory serviceScopeFactory, ILogger<ReminderService> logger)
@@ -70,12 +73,16 @@ public class ReminderService : BackgroundService
                         }
                     }
 
-                    // Check for upcoming appointments in the next 24 hours (notify 30 minutes before)
+                    // Check for upcoming appointments — notify 30 minutes before.
+                    // FIX: Previously the date range used nowUtc.Date (UTC) while the time window
+                    // used appointmentReminderTime derived from nowEst (Eastern). This caused the
+                    // notification to fire at the wrong UTC time in some cases.
+                    // Now both the date range and the time comparison use the same EST-based time.
                     var appointmentReminderTime = nowEst.AddMinutes(30);
 
                     var upcomingAppointments = await context.Appointments
-                        .Where(a => a.Date > nowUtc.Date &&
-                                    a.Date <= nowUtc.AddDays(1).Date &&
+                        .Where(a => a.Date > nowEst.Date &&
+                                    a.Date <= nowEst.AddDays(1).Date &&
                                     a.Time.Hours == appointmentReminderTime.Hour &&
                                     a.Time.Minutes == appointmentReminderTime.Minute &&
                                     !a.IsDeleted)

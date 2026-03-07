@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MedicHelperAPI.DTOs;
 using MedicHelperAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +16,9 @@ public class RemindersController : ControllerBase
 {
     private readonly MedicHelperContext _context;
     private readonly IMapper _mapper;
+    // NOTE (timezone): All reminder filtering and notifications are hardcoded to Eastern
+    // Standard Time. Users in other timezones will see reminders for the wrong day/time.
+    // Future fix: store a user timezone preference in the User model and use it here.
     private static readonly TimeZoneInfo EasternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
 
@@ -62,9 +65,14 @@ public class RemindersController : ControllerBase
             return Unauthorized("Cant set reminder on this medication");
         }
 
-        if(reminderDTO.Dosage > medications[0].Inventory && reminderDTO.Dosage <=0)
+        // BUG FIX: The original condition was:
+        //   if(reminderDTO.Dosage > medications[0].Inventory && reminderDTO.Dosage <= 0)
+        // Using && means both must be true simultaneously — a number can't be greater than
+        // inventory AND less-than-or-equal-to zero at the same time (unless inventory < 0),
+        // so this check never fired. Changed to || so either invalid condition rejects it.
+        if(reminderDTO.Dosage > medications[0].Inventory || reminderDTO.Dosage <= 0)
         {
-            return BadRequest("Dosage is greater than the medication dosage");
+            return BadRequest("Dosage must be greater than 0 and cannot exceed the medication inventory.");
         }
 
         var reminder = _mapper.Map<Reminder>(reminderDTO);

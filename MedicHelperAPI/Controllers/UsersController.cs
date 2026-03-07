@@ -27,20 +27,11 @@ public class UsersController : ControllerBase
         _userManager = userManager;
     }
 
-    [Authorize]
-    [HttpGet]
-    public async Task<IActionResult> GetUsers()
-    {
-        try
-        {
-            var users = await _context.Users.ToListAsync();
-            return Ok(users);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
-        }
-    }
+    // SECURITY FIX: This endpoint returned the entire users table (including Identity internals
+    // like PasswordHash and SecurityStamp) to any authenticated user. It has been removed as
+    // there is no legitimate use case in this app for a regular user to list all other users.
+    // If an admin-only list endpoint is needed in the future, it should use [Authorize(Roles="Admin")]
+    // and return a DTO, not the raw User entity.
 
     [Authorize]
     [HttpGet("me")]
@@ -107,7 +98,10 @@ public class UsersController : ControllerBase
 
     [Authorize]
     [HttpPut("changePassword")]
-    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDTO changePasswordDto)
+    // BUG FIX: [FromBody] was missing. Without it, ASP.NET Core defaults to query-string
+    // binding for complex types on PUT, so the DTO would always be null/empty, making
+    // every password change attempt fail silently.
+    public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordDTO changePasswordDto)
     {
         if (changePasswordDto == null)
         {
@@ -191,7 +185,9 @@ public class UsersController : ControllerBase
                 return BadRequest(result.Errors);
             }
 
-            return Ok("FCM token updated successfully");
+            // FIX: Previously returned "FCM token updated successfully" which is misleading
+            // for a logout operation. Now returns a message that matches what actually happened.
+            return Ok("Logged out successfully");
         }
         else
         {
