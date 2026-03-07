@@ -79,7 +79,12 @@ public class ChangePasswordViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                changePasswordResponse.setValue("Error: " + t.getMessage());
+                // FIX: Was posting "Error: ..." (a non-null string) which caused the fragment's
+                // observer (if (message != null) → show "Password change successful!") to
+                // incorrectly show success on a network failure. Post null so the observer
+                // falls through to the else branch and shows the failure message.
+                Log.e("ChangePasswordViewModel", "Network failure: " + t.getMessage());
+                changePasswordResponse.postValue(null);
             }
         });
     }

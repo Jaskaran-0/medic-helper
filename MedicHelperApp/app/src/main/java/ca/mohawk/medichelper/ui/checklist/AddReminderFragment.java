@@ -162,7 +162,26 @@ public class AddReminderFragment extends Fragment {
             }
         }
 
-        int dosage = Integer.parseInt(etDosage.getText().toString());
+        // FIX: Guard against empty field and non-numeric input before parsing.
+        // The original Integer.parseInt() call with no check would throw NumberFormatException
+        // and crash the app if the field was empty or contained non-digit characters.
+        String dosageText = etDosage.getText().toString().trim();
+        if (dosageText.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a dosage", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int dosage;
+        try {
+            dosage = Integer.parseInt(dosageText);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), "Dosage must be a whole number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (dosage <= 0) {
+            Toast.makeText(getContext(), "Dosage must be greater than zero", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if(selectedMedication.getInventory() < dosage){
             Toast.makeText(getContext(), "Dosage exceeds inventory", Toast.LENGTH_SHORT).show();
@@ -175,15 +194,9 @@ public class AddReminderFragment extends Fragment {
             return;
         }
 
-        if (selectedMedicationId == -1) {
-            Toast.makeText(getContext(), "Please select a medication", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (dosage == 0) {
-            Toast.makeText(getContext(), "Please enter a dosage", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // FIX: Removed duplicate selectedMedicationId == -1 check. It was already checked
+        // near the top of saveReminder() before the medication lookup loop, so this second
+        // identical check could never fire and was dead code.
 
         Reminder reminder = new Reminder(
                 selectedMedicationId,
