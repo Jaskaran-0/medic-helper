@@ -83,27 +83,27 @@ public class MedicationsController : ControllerBase
         try
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var medications = await _context.Medications.Include(m => m.Reminders).Where(m => m.UserId == userId).ToListAsync();
 
-            if(medications.Count != 0)
+            // SECURITY FIX: Previously this checked if the user owned *any* medication
+            // (medications.Count != 0), then fetched the target medication by ID without
+            // verifying ownership. Any user with at least one medication could update
+            // any other user's medication. Now we fetch only if UserId matches.
+            var medication = await _context.Medications
+                .FirstOrDefaultAsync(m => m.MedicationId == medicationDto.MedicationId && m.UserId == userId);
+
+            if (medication == null)
             {
-                var medication = await _context.Medications.FindAsync(medicationDto.MedicationId);
-                if (medication == null)
-                {
-                    return NotFound(new { Message = "Medication not found." });
-                }
-
-                medication.Inventory = medicationDto.Inventory;
-                medication.UpdatedAt = DateTime.UtcNow;
-
-                _context.Medications.Update(medication);
-
-                await _context.SaveChangesAsync();
-                return NoContent();
-
+                // Returns 404 regardless of whether the medication exists but belongs to
+                // someone else — avoids leaking information about other users' data.
+                return NotFound(new { Message = "Medication not found." });
             }
-            return Unauthorized("Access Denied");
 
+            medication.Inventory = medicationDto.Inventory;
+            medication.UpdatedAt = DateTime.UtcNow;
+
+            _context.Medications.Update(medication);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
         catch (Exception ex)
         {
@@ -117,7 +117,14 @@ public class MedicationsController : ControllerBase
     {
         try
         {
-            var medication = await _context.Medications.FindAsync(medicationId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // SECURITY FIX: Previously fetched by ID only with no ownership check, allowing
+            // any authenticated user to delete any medication by guessing its ID.
+            // Now filters by both medicationId AND the current user's ID.
+            var medication = await _context.Medications
+                .FirstOrDefaultAsync(m => m.MedicationId == medicationId && m.UserId == userId);
+
             if (medication == null)
             {
                 return NotFound(new { Message = "Medication not found." });

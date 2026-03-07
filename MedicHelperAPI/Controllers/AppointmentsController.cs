@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -51,6 +51,15 @@ public class AppointmentsController : ControllerBase
         if (userId == null)
         {
             return Unauthorized(new { Message = "User is not authenticated." });
+        }
+
+        // FIX: Added validation that the appointment date is in the future.
+        // Without this check users could create appointments in the past, which
+        // would never appear in the list (GetAppointments filters by Date > today)
+        // and would still trigger notification checks in ReminderService.
+        if (appointmentDTO.Date.Date <= DateTime.UtcNow.Date)
+        {
+            return BadRequest("Appointment date must be in the future.");
         }
 
         var appointment = _mapper.Map<Appointment>(appointmentDTO);

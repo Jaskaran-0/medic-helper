@@ -1,3 +1,11 @@
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -18,12 +26,13 @@ android {
     }
 
    signingConfigs {
-    create("release") {
-        storeFile = file("my-release-key.jks")
-        storePassword = localProperties["KEY_STORE_PASSWORD"] as String? ?: ""
-        keyAlias = "my-key-alias"
-        keyPassword = localProperties["KEY_PASSWORD"] as String? ?: ""
-    }
+       create("release") {
+           storeFile = file("my-release-key.jks")
+           storePassword = localProperties["KEY_STORE_PASSWORD"] as String? ?: ""
+           keyAlias = "my-key-alias"
+           keyPassword = localProperties["KEY_PASSWORD"] as String? ?: ""
+       }
+   }
 
     buildTypes {
         getByName("release") {

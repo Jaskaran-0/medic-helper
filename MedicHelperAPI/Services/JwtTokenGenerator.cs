@@ -1,4 +1,4 @@
-﻿using MedicHelperAPI.Models;
+using MedicHelperAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -30,7 +30,12 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddDays(150),
+            // FIX: Was set to 150 days — far too long. A compromised token would be valid
+            // for 5 months with no way to revoke it (logout only clears the FCM token, not
+            // the JWT itself). Reduced to 7 days as a safer default.
+            // Future improvement: implement a refresh token system so short-lived access
+            // tokens can be renewed without forcing the user to log in every week.
+            expires: DateTime.Now.AddDays(7),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -46,8 +51,8 @@ public class JwtTokenGenerator : IJwtTokenGenerator
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
                 ValidateIssuer = true,
-                ValidIssuer = _configuration["Jwt:Issuer"], 
-                ValidateAudience = true, 
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidateAudience = true,
                 ValidAudience = _configuration["Jwt:Audience"],
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validatedToken);

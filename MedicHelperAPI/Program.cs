@@ -28,15 +28,10 @@ public class Program
         var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
 
         var jwtKey = secretClient.GetSecret("JWTKey").Value.Value; 
-        
         var jwtIssuer = secretClient.GetSecret("JWTIssuer").Value.Value; 
-        
         var jwtAudience = secretClient.GetSecret("JWTAudience").Value.Value; 
-        
         var firebaseAdminSdk = secretClient.GetSecret("FirebaseAdminSDK").Value.Value; 
-        
         var connectionString = secretClient.GetSecret("ConnectionString").Value.Value;
-
 
         var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +45,6 @@ public class Program
 
         // Add secrets to configuration
         builder.Configuration.AddInMemoryCollection(inMemorySettings);
-
 
         builder.Services.AddHostedService<ReminderService>();
         builder.Services.AddHostedService<ReminderResetService>();
@@ -87,10 +81,7 @@ public class Program
             };
         });
 
-        //ConfigureFirebase();
-
         using var secretStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(firebaseAdminSdk));
-
         FirebaseApp.Create(new AppOptions
         {
             Credential = GoogleCredential.FromStream(secretStream)
@@ -100,7 +91,31 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        // FIX: NotificationService now requires ILogger<NotificationService> — DI resolves
+        // this automatically since ILogger is registered by AddLogging (called internally
+        // by WebApplication.CreateBuilder). No extra registration needed here.
         builder.Services.AddScoped<NotificationService>();
+
+        // FIX: Added Swagger/OpenAPI support. Swashbuckle.AspNetCore was already referenced
+        // in the csproj but never wired up, making the API impossible to browse or test
+        // without a separate client. Swagger UI is enabled in all environments here;
+        // restrict to Development only if you don't want it exposed in production.
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
+        // FIX: Added CORS policy. Without this, browser-based clients (including the Swagger
+        // UI when served from a different origin) will be blocked by the browser's same-origin
+        // policy. The policy below is permissive for development; tighten AllowAnyOrigin()
+        // to specific origins before deploying to production.
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
 
         var app = builder.Build();
 
@@ -114,10 +129,17 @@ public class Program
             app.UseHsts();
         }
 
+        // FIX: Swagger middleware added. UseSwaggerUI must come after UseSwagger.
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
+
+        // FIX: UseCors must be placed between UseRouting and UseAuthentication/UseAuthorization.
+        app.UseCors("AllowAll");
 
         app.UseAuthentication();
         app.UseAuthorization();
@@ -126,25 +148,7 @@ public class Program
         app.Run();
     }
 
-    public static void ConfigureFirebase()
-    {
-        string firebaseKey = Environment.GetEnvironmentVariable("FIREBASE_ADMIN_SDK");
-
-        if (!string.IsNullOrEmpty(firebaseKey))
-        {
-            var path = Path.Combine(AppContext.BaseDirectory, "firebase_adminsdk.json");
-            File.WriteAllText(path, firebaseKey); // Use synchronous File.WriteAllText instead
-
-            FirebaseApp.Create(new AppOptions
-            {
-                Credential = GoogleCredential.FromFile(path)
-            });
-        }
-        else
-        {
-            throw new Exception("Firebase Admin SDK key not found in environment variables.");
-        }
-    }
-
-
+    // FIX: Removed the dead ConfigureFirebase() method. It was commented out at the call
+    // site (//ConfigureFirebase()) and replaced by inline code in Main(). Having an unused
+    // method with a conflicting implementation causes confusion about which path is active.
 }

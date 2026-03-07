@@ -4,7 +4,11 @@ import java.util.Date;
 
 public class UserSessionManager {
 
-    private static UserSessionManager instance;
+    // FIX: Added 'volatile' so that the instance reference is always read from main memory,
+    // not a thread-local CPU cache. Without this, a second thread could see a partially
+    // constructed object. Combined with the double-checked lock below, this makes the
+    // singleton safe for multi-threaded access without synchronizing every call to getInstance().
+    private static volatile UserSessionManager instance;
 
     // User information
     private String firstName;
@@ -17,10 +21,16 @@ public class UserSessionManager {
     // Private constructor to prevent instantiation
     private UserSessionManager() {}
 
-    // Singleton pattern: getInstance() to get the single instance of this class
+    // FIX: Added double-checked locking to make the singleton thread-safe.
+    // The original code had a race condition: two threads could both see instance == null
+    // simultaneously and each create a separate instance, breaking the singleton guarantee.
     public static UserSessionManager getInstance() {
         if (instance == null) {
-            instance = new UserSessionManager();
+            synchronized (UserSessionManager.class) {
+                if (instance == null) {
+                    instance = new UserSessionManager();
+                }
+            }
         }
         return instance;
     }
