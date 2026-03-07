@@ -18,6 +18,7 @@
 **/*.so
 **/.DS_Store
 **/Thumbs.db
+**/*firebase-adminsdk*.json
 
 # ─── ASP.NET / API ─────────────────────────────────────
 **/bin/

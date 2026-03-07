@@ -17,13 +17,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file("C:/Users/jaska/MedicHelper/MedicHelperApp/my-release-key.jks") // Path to your keystore
-            storePassword = "Jas-1103967"
-            keyAlias = "my-key-alias"
-            keyPassword = "Jas-1103967"
-        }
+   signingConfigs {
+    create("release") {
+        storeFile = file("my-release-key.jks")
+        storePassword = localProperties["KEY_STORE_PASSWORD"] as String? ?: ""
+        keyAlias = "my-key-alias"
+        keyPassword = localProperties["KEY_PASSWORD"] as String? ?: ""
     }
 
     buildTypes {
