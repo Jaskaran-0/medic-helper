@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Medication Name Label -->
+        <TextView
+            android:id="@+id/tv_medication_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medication_name_label"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- Medication Name Input -->
+        <EditText
+            android:id="@+id/et_medication_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/medication_name_input"
+            android:textColor="@android:color/black"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Inventory Count Label -->
+        <TextView
+            android:id="@+id/tv_medication_inventory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inventory_label"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- Inventory Count Input -->
+        <EditText
+            android:id="@+id/et_medication_inventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/inventory_input"
+            android:inputType="number"
+            android:textColor="@android:color/black"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Image Label -->
+        <TextView
+            android:id="@+id/tv_select_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_image_label"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- ImageView for displaying selected image -->
+        <ImageView
+            android:id="@+id/iv_medication_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/selected_image"
+            android:background="@android:color/darker_gray"
+            android:scaleType="centerCrop" />
+
+        <!-- Button to choose image -->
+        <Button
+            android:id="@+id/btn_select_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/select_image"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Add Medication Button -->
+        <Button
+            android:id="@+id/btn_add_medication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_medication_label"
+            android:background="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Progress Bar for loading state -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

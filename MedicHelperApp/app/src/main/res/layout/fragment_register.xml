@@ -1,0 +1,141 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_register_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:text="@string/sign_up_label"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <!-- Account Setup Heading -->
+        <TextView
+            android:id="@+id/tv_account_setup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:text="@string/account_setup_label"
+            android:textSize="16sp" />
+
+        <!-- First Name -->
+        <EditText
+            android:id="@+id/et_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name_label"
+            android:inputType="text"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+        <!-- Last Name -->
+        <EditText
+            android:id="@+id/et_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/last_name_label"
+            android:inputType="text"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+        <!-- Email -->
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/email_label"
+            android:inputType="textEmailAddress"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+        <!-- Phone Number -->
+        <EditText
+            android:id="@+id/et_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/phone_number_label"
+            android:inputType="phone"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+        <!-- Date of Birth -->
+        <TextView
+            android:id="@+id/tv_dob_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/dob_label" />
+
+        <DatePicker
+            android:id="@+id/dp_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <!-- Password -->
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/password_label"
+            android:inputType="textPassword"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+        <!-- Confirm Password -->
+        <EditText
+            android:id="@+id/et_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+            android:paddingVertical="20dp"
+            android:textColor="@android:color/black" />
+
+<!--         Use Fingerprint -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/use_fingerprint_to_login" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_fingerprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingHorizontal="5dp" />
+        </LinearLayout>
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/btn_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/sign_up_label"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

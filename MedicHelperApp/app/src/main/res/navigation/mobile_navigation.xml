@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_checklist">
+
+    <fragment
+        android:id="@+id/nav_checklist"
+        android:name="ca.mohawk.medichelper.ui.checklist.ChecklistFragment"
+        android:label="@string/menu_checklist"
+        tools:layout="@layout/fragment_checklist" />
+
+    <fragment
+        android:id="@+id/nav_add_reminder"
+        android:name="ca.mohawk.medichelper.ui.checklist.AddReminderFragment"
+        android:label="Set a Reminder"
+        tools:layout="@layout/fragment_add_reminder" />
+
+    <fragment
+        android:id="@+id/nav_inventory"
+        android:name="ca.mohawk.medichelper.ui.inventory.InventoryFragment"
+        android:label="@string/menu_inventory"
+        tools:layout="@layout/fragment_inventory" />
+
+    <fragment
+        android:id="@+id/nav_add_inventory"
+        android:name="ca.mohawk.medichelper.ui.inventory.AddInventoryFragment"
+        android:label="Add Medication"
+        tools:layout="@layout/fragment_add_inventory" />
+
+    <fragment
+        android:id="@+id/nav_appointments"
+        android:name="ca.mohawk.medichelper.ui.appointments.AppointmentFragment"
+        android:label="@string/menu_appointments"
+        tools:layout="@layout/fragment_appointments" />
+
+    <fragment
+        android:id="@+id/nav_add_appointment"
+        android:name="ca.mohawk.medichelper.ui.appointments.AddAppointmentFragment"
+        android:label="Add Appointments"
+        tools:layout="@layout/fragment_add_inventory" />
+
+    <fragment
+        android:id="@+id/nav_notes"
+        android:name="ca.mohawk.medichelper.ui.notes.NotesFragment"
+        android:label="@string/menu_notes"
+        tools:layout="@layout/fragment_notes" />
+
+    <fragment
+        android:id="@+id/nav_add_notes"
+        android:name="ca.mohawk.medichelper.ui.notes.AddNoteFragment"
+        android:label="Add a Note"
+        tools:layout="@layout/fragment_add_reminder" />
+
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="ca.mohawk.medichelper.ui.account.AccountFragment"
+        android:label="@string/menu_account"
+        tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/nav_change_password"
+        android:name="ca.mohawk.medichelper.ui.changepassword.ChangePasswordFragment"
+        android:label="@string/menu_change_password"
+        tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/nav_family"
+        android:name="ca.mohawk.medichelper.ui.family.FamilyFragment"
+        android:label="Family Members"
+        tools:layout="@layout/fragment_family" />
+
+    <fragment
+        android:id="@+id/add_family"
+        android:name="ca.mohawk.medichelper.ui.family.AddFamilyFragment"
+        android:label="Family Members"
+        tools:layout="@layout/fragment_add_family" />
+
+</navigation>

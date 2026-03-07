@@ -1,0 +1,32 @@
+<!-- fragment_inventory.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- RecyclerView to display medication list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_medications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/fab" />
+
+    <!-- ProgressBar for loading state -->
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_medication_label"
+        android:src="@android:drawable/ic_input_add" />
+</RelativeLayout>

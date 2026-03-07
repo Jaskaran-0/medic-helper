@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_medication"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/iv_medication_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/medication_image"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Medication Name -->
+        <TextView
+            android:id="@+id/tv_medication_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="crocin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="4dp"/>
+
+        <!-- Inventory and EditText section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_inventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inventory_count"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginEnd="4dp" />
+
+            <EditText
+                android:id="@+id/et_inventory_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:backgroundTint="@android:color/darker_gray"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:layout_marginStart="0dp" />
+        </LinearLayout>
+
+        <!-- Buttons section -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp">
+
+            <!-- Update Button -->
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textSize="14sp"
+                android:enabled="false"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Delete Button -->
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

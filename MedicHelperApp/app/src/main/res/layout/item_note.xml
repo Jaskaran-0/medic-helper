@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Image View to display note's image -->
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <!-- Vertical Layout for Note Content -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note Title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_note_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note content goes here" />
+
+        <TextView
+            android:id="@+id/tv_created_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF0202"
+        android:text="@string/delete" />
+</LinearLayout>

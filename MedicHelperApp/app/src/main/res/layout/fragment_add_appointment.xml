@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title input field -->
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appointment Title"
+            android:padding="8dp"
+            android:textSize="24sp" />
+
+        <!-- Description input field -->
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Appointment Description"
+            android:padding="8dp"
+            android:textSize="24sp" />
+
+        <!-- Date picker button -->
+        <Button
+            android:id="@+id/btn_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Date"
+            android:layout_marginTop="16dp" />
+
+        <!-- Time picker button -->
+        <Button
+            android:id="@+id/btn_time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Time"
+            android:layout_marginTop="8dp" />
+
+        <!-- Add appointment button -->
+        <Button
+            android:id="@+id/btn_add_appointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="?attr/colorPrimaryDark"
+            android:text="Add Appointment"
+            android:textColor="@android:color/white" />
+
+        <!-- Progress bar for loading -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

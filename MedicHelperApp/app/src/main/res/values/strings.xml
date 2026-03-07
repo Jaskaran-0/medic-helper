@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Medic Helper</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="account">Account</string>
+
+    <string name="menu_checklist">Checklist</string>
+    <string name="menu_inventory">Inventory</string>
+    <string name="menu_appointments">Appointments</string>
+    <string name="menu_notes">Notes</string>
+
+
+    <string name="email_label">Email Address:</string>
+    <string name="password_label">Password:</string>
+    <string name="login_button">Login</string>
+    <string name="signup_redirect">Sign up</string>
+    <string name="family_members">Family Members</string>
+    <string name="logout">Logout</string>
+    <string name="change_password">Change Password</string>
+    <string name="use_fingerprint_to_login">Use fingerprint to login:</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="dob_label">Date of birth:</string>
+    <string name="phone_number_label">Phone number</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="first_name_label">First Name</string>
+    <string name="account_setup_label">Account Setup</string>
+    <string name="sign_up_label">Sign up</string>
+    <string name="fab_text">Add Item</string>
+    <string name="menu_account">User Details</string>
+    <string name="first_name_hint">Enter your first nameJohn</string>
+    <string name="last_name_hint">Enter your last name(Doe)</string>
+    <string name="email_hint">Enter your email(johndoe@gmail.com)</string>
+    <string name="phonenumber_hint">Enter your phone number</string>
+    <string name="save">Save</string>
+    <string name="menu_change_password">Change Password</string>
+    <string name="inventory_fab_label">Add medication to inventory</string>
+    <string name="reminder_fab_label">Add medication reminder</string>
+    <string name="appointment_fab_label">Add appointment to your calender</string>
+    <string name="note_fab_label">Add notes</string>
+    <string name="add_medication_label">Add Medication</string>
+    <string name="select_image">Select Image</string>
+    <string name="selected_image">Selected Image</string>
+    <string name="select_image_label">Select Image:</string>
+    <string name="inventory_input">Enter number of pills/units</string>
+    <string name="inventory_label">Number of pills/units:</string>
+    <string name="medication_name_input">Enter medication name</string>
+    <string name="medication_name_label">Medication Name:</string>
+    <string name="medication_image">Medication Image</string>
+    <string name="medication_name">Medication Name</string>
+    <string name="inventory_count">Pills/Units:</string>
+    <string name="delete">DELETE</string>
+    <string name="note_image">Note Image</string>
+    <string name="add_appointment">Add Appointment\n</string>
+
+</resources>
