@@ -23,17 +23,13 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var keyVaultUrl = "https://medic-helper-keyvault.vault.azure.net/"; 
-        
-        var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
-
-        var jwtKey = secretClient.GetSecret("JWTKey").Value.Value; 
-        var jwtIssuer = secretClient.GetSecret("JWTIssuer").Value.Value; 
-        var jwtAudience = secretClient.GetSecret("JWTAudience").Value.Value; 
-        var firebaseAdminSdk = secretClient.GetSecret("FirebaseAdminSDK").Value.Value; 
-        var connectionString = secretClient.GetSecret("ConnectionString").Value.Value;
-
         var builder = WebApplication.CreateBuilder(args);
+
+        var jwtKey = builder.Configuration["JWT:Key"];
+        var jwtIssuer = builder.Configuration["JWT:Issuer"];
+        var jwtAudience = builder.Configuration["JWT:Audience"];
+        var firebaseAdminSdk = builder.Configuration["Firebase:AdminSDK"];
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         var inMemorySettings = new Dictionary<string, string?>
         {
@@ -84,7 +80,7 @@ public class Program
         using var secretStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(firebaseAdminSdk));
         FirebaseApp.Create(new AppOptions
         {
-            Credential = GoogleCredential.FromStream(secretStream)
+            Credential = GoogleCredential.FromFile(firebaseAdminSdk)
         });
 
         builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -119,6 +115,12 @@ public class Program
 
         var app = builder.Build();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<MedicHelperContext>();
+            db.Database.Migrate();
+        }
+
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -148,7 +150,4 @@ public class Program
         app.Run();
     }
 
-    // FIX: Removed the dead ConfigureFirebase() method. It was commented out at the call
-    // site (//ConfigureFirebase()) and replaced by inline code in Main(). Having an unused
-    // method with a conflicting implementation causes confusion about which path is active.
 }

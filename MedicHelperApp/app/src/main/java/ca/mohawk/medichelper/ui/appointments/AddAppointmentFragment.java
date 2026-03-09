@@ -77,6 +77,17 @@ public class AddAppointmentFragment extends Fragment {
             Calendar selectedCalendar = Calendar.getInstance();
             selectedCalendar.set(year, month, dayOfMonth); // Set the selected date
 
+            // FIX: Zero out time-of-day before converting to UTC. Without this, the Calendar
+            // retains the current hour/minute/second, so users in UTC- timezones who pick a
+            // date in the evening would see it sent as the previous calendar day in UTC
+            // (e.g., picking Jan 15 at 8 PM EST → "2024-01-16T01:00:00Z", or more critically,
+            // picking at 6 PM EST → "2024-01-15T23:00:00Z" which rounds to Jan 15, but
+            // picking at 11 PM EST → "2024-01-16T04:00:00Z" which stores as Jan 16).
+            selectedCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            selectedCalendar.set(Calendar.MINUTE, 0);
+            selectedCalendar.set(Calendar.SECOND, 0);
+            selectedCalendar.set(Calendar.MILLISECOND, 0);
+
             // Format the selected date as "yyyy-MM-dd" to display in the UI
             SimpleDateFormat displayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             displayFormat.setTimeZone(TimeZone.getDefault());

@@ -93,8 +93,25 @@ public class AddInventoryViewModel extends AndroidViewModel {
             return;
         }
 
+        // FIX: Guard against non-numeric input before parsing. An empty string is already
+        // caught above, but a value like "abc" would throw NumberFormatException and crash.
+        int inventoryInt;
+        try {
+            inventoryInt = Integer.parseInt(inventoryCount);
+        } catch (NumberFormatException e) {
+            Log.e("AddInventoryViewModel", "Inventory count is not a valid integer: " + inventoryCount);
+            isLoading.postValue(false);
+            return;
+        }
+
+        if (inventoryInt <= 0) {
+            Log.e("AddInventoryViewModel", "Inventory count must be greater than zero");
+            isLoading.postValue(false);
+            return;
+        }
+
         // Create the medication object
-        Medication medication = new Medication(medicationName, Integer.parseInt(inventoryCount), base64Image);
+        Medication medication = new Medication(medicationName, inventoryInt, base64Image);
 
         // Call the API to add the medication
         Call<Medication> call = apiService.addMedication("Bearer " + token, medication);

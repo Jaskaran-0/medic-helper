@@ -81,8 +81,8 @@ public class ReminderService : BackgroundService
                     var appointmentReminderTime = nowEst.AddMinutes(30);
 
                     var upcomingAppointments = await context.Appointments
-                        .Where(a => a.Date > nowEst.Date &&
-                                    a.Date <= nowEst.AddDays(1).Date &&
+                        .Where(a => a.Date > nowUtc.Date &&
+                                    a.Date <= nowUtc.AddDays(1).Date &&
                                     a.Time.Hours == appointmentReminderTime.Hour &&
                                     a.Time.Minutes == appointmentReminderTime.Minute &&
                                     !a.IsDeleted)

@@ -29,7 +29,15 @@ public class AuthService : IAuthService
 
         if (result.Succeeded)
         {
-            return await _jwtTokenGenerator.GenerateTokenAsync(user);
+            try
+            {
+                return await _jwtTokenGenerator.GenerateTokenAsync(user);
+            }
+            catch
+            {
+                await _userManager.DeleteAsync(user);
+                throw;
+            }
         }
 
         throw new IdentityException("Registration failed", result.Errors);
