@@ -38,7 +38,6 @@ public class AddAppointmentViewModel extends AndroidViewModel {
         isLoading.setValue(true);
 
         Appointment appointment = new Appointment(title, description, date, time);
-
         apiService.addAppointment("Bearer " + token, appointment).enqueue(new Callback<Appointment>() {
             @Override
             public void onResponse(Call<Appointment> call, Response<Appointment> response) {
@@ -49,7 +48,7 @@ public class AddAppointmentViewModel extends AndroidViewModel {
                 } else {
                     isAppointmentAdded.setValue(false);
                     Log.e(TAG, "Failed to add appointment. Response code: " + response.code());
-                    Log.e(TAG, "Response message: " + response.message());
+                    Log.e(TAG, "Response message: " + response.errorBody());
 
                     Toast.makeText(getApplication(), "Failed to add appointment", Toast.LENGTH_SHORT).show();
                 }

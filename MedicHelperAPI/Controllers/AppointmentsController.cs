@@ -57,7 +57,7 @@ public class AppointmentsController : ControllerBase
         // Without this check users could create appointments in the past, which
         // would never appear in the list (GetAppointments filters by Date > today)
         // and would still trigger notification checks in ReminderService.
-        if (appointmentDTO.Date.Date <= DateTime.UtcNow.Date)
+        if (appointmentDTO.Date.Date < DateTime.UtcNow.Date)
         {
             return BadRequest("Appointment date must be in the future.");
         }
